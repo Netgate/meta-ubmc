@@ -154,29 +154,28 @@ Reboot to the U-Boot prompt and we can attempt to boot from our new Yocto system
   bootz 0x82000000 - 0x88000000
 
 The uBMC should now boot from the Yocto image you previously installed. If you want it to do so automatically, reboot and re-enter the above commands as part of the U-Boot "bootcmd" variable.
-```
-Sending discover...
-Sending select for 172.21.2.41...
-Lease of 172.21.2.41 obtained, lease time 7200
-/etc/udhcpc.d/50default: Adding DNS 172.21.2.1
-done.
-Starting system message bus: dbus.
-random: nonblocking pool is initialized
-Starting OpenBSD Secure Shell server: sshd
-done.
-Starting ntpd: done
-Starting syslogd/klogd: done
 
-Poky (Yocto Project uBMC) 2.0.1 micro-BMC
+    Sending discover...
+    Sending select for 172.21.2.41...
+    Lease of 172.21.2.41 obtained, lease time 7200
+    /etc/udhcpc.d/50default: Adding DNS 172.21.2.1
+    done.
+    Starting system message bus: dbus.
+    random: nonblocking pool is initialized
+    Starting OpenBSD Secure Shell server: sshd
+    done.
+    Starting ntpd: done
+    Starting syslogd/klogd: done
 
-
-            _                      ____  __  __  _____
-           (_)                    |  _ \\|  \\/  |/ ____|
-  _ __ ___  _  ___ _ __ ___ ______| |_) | \\  / | |
- |  _   _ \\| |/ __| __/  _  \\_____|  _ <| |\\\/| | |
- | | | | | | | (__| | | (_) |     | |_) | |  | | |____
- |_| |_| |_|_|\\___|_|  \\___/      |____/|_|  |_|\\_____|
+    Poky (Yocto Project uBMC) 2.0.1 micro-BMC
 
 
-micro-BMC login:
-```
+                _                      ____  __  __  _____
+               (_)                    |  _ \\|  \\/  |/ ____|
+      _ __ ___  _  ___ _ __ ___ ______| |_) | \\  / | |
+     |  _   _ \\| |/ __| __/  _  \\_____|  _ <| |\\\/| | |
+     | | | | | | | (__| | | (_) |     | |_) | |  | | |____
+     |_| |_| |_|_|\\___|_|  \\___/      |____/|_|  |_|\\_____|
+    
+    
+    micro-BMC login:

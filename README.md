@@ -15,10 +15,10 @@ This layer depends on:
     revision: HEAD
     commit: 9bfcf79
 
-    meta-bbb layer maintainer: Scott Ellis <scott@jumpnowtek.com>
+    meta-ubmc layer maintainer: Steve Beaver <sbaver@netgate.com>
 
 
-Instructions for using this layer can be found on the [jumpnowtek site][jumpnowtek-bbb].
+
 
 Major Software Versions
 
@@ -26,71 +26,156 @@ Major Software Versions
 * Linux kernel 4.4.3 (linux-stable)
 * U-Boot 2016.01
 
-The qt5-image includes [Qt 5.5.1][qt] built for framebuffer use only.
+Building Linux for the uBMC
 
-Launch Qt5 apps with the following args 
+The uBMC Linux kernel and root file system are produced by the Yocto project build system. https://www.yoctoproject.org/ along with a custom uBMC Board Support Package (BSP) layer named meta-ubmc
 
-    -platform linuxfb
+If you follow the instructions that follow carefully, it should be possible to create a complete working system from a single shell command.
+Preparing the build system
 
-There is a demo qt5 app installed - [tspress][tspress].
+On a Linux system (Ubuntu, CentOS, Fedora or Debian are recommended) ensure that the followinf packages are installed:
 
-There is a *spidev* loopback test app installed - [spiloop][spiloop].
+    bc
+    build-essential
+    chrpath
+    diffstat
+    gawk
+    git
+    libncurses5-dev
+    pkg-config
+    subversion
+    texi2html
+    texinfo
+    u-boot-tools
 
-The default dtb with the example `uEnv.txt` enables HDMI
+Downloading the build environment and layers
 
-* bbb-hdmi.dtb
+From your home directory, create a ubmc and a build directory:
 
-There is a dtb without HDMI/display support, freeing up some GPIO pins and UART5
+  ~/$ mkdir -p ubmc/build
 
-* bbb-nohdmi.dtb
+If you are using Ubuntu, change teh default shell to Bash by typing "sudo dpkg-reconfigure dash" and selecting "No" from the menu displayed.
 
-And there are dtbs for a couple of touchscreen capes
+From your home directory obtain and install a copy of the Yocto build system and some required layers:
 
-* bbb-4dcape70.dtb - for the 4D Systems LCD, 7-inch, 800x480 touchscreen 
-* bbb-nh5cape.dtb - for the NewHaven Capacitive, 5-inch, 800x480 touchscreen 
+  ~/$ git clone -b jethro git://git.yoctoproject.org/poky.git poky-jethro
+  ~/$ cd poky-jethro
+  ~/poky-jeth$ git clone -b jethro git://git.openembedded.org/meta-openembedded
+  ~/poky-jetho$ git clone -b jethro https://github.com/meta-qt5/meta-qt5.git
 
-All the dtbs include the following
+Change directories to your ~/ubmcdirectory, and dowload a copy of the ubmc layer meta-ubmc.tar.gz from smb://172.27.32.4/sbeaver
 
-* /dev/spidev1.0 - pins P9.28 cs0, P9.29 d0, P9.30 d1, P9.31 sclk - d0 is MOSI
-* /dev/i2c1 - pins P9.17 scl and P9.18 sda
-* /dev/i2c2 - pins P9.19 scl and P9.20 sda
+Unpack it using tar xvzf meta-ubmc.tar.gz You should now have a directory structure like this:
 
-
-To switch between these dtbs, take a look at `uEnv.txt` on the boot partition.
-
-You can mount the boot partition like this
-
-    root@beaglebone~# mount /dev/mmcblk0p1 /mnt
-
-    root@beaglebone:~# ls -l /mnt
-    total 466
-    -rwxr-xr-x 1 root root  64408 Jul 24 09:00 MLO
-    -rwxr-xr-x 1 root root 410860 Jul 24 09:00 u-boot.img
-    -rwxr-xr-x 1 root root   1112 Jul 24 09:00 uEnv.txt
-
-You can either modify `fdtfile=` or you can modify `touchscreen_dtb=` and also
-add a *use_touchscreen* file to the `/boot` directory on the root filesystem.
-
-    root@beaglebone:~# touch > /boot/use_touchscreen
-
-Those are just some examples. You can easily devise your own strategy for
-choosing which *dtb* to load at boot.
-
-To use the nh5cape you will need the `ft5x06_ts` touchscreen driver
-
-    root@beaglebone:~# echo ft5x06_ts >> /dev/modules
-
-You can load it manually with *modprobe*
-
-    root@beaglebone:~# modprobe ft5x06_ts
-
-Or add it to `/etc/modules` to have it load every boot
-
-    root@beaglebone:~# echo ft5x06_ts >> /etc/modules
+  Home
+     |
+     |--ubmc
+     |   |
+     |   --build
+     |   --meta-ubmc
+     |
+     |--poky-jethro
 
 
-[jumpnowtek-bbb]: http://www.jumpnowtek.com/yocto/BeagleBone-Systems-with-Yocto.html
-[qt]: http://www.qt.io/
-[tspress]: https://github.com/scottellis/tspress
-[spiloop]: https://github.com/scottellis/spiloop
+Preparing the build system
 
+Prepare the build system by using the Yocto scripts to set up your directory tree and environment variables. From your home directory:
+
+  ~/$ source poky-jethro/oe-init-build-env ~/ubmc/build
+
+Now we need to copy some sample configuration files from the ubmc layer. From the ~/ubmc directory:
+
+  ~/ubmc$ cp meta-ubmc/conf/local.conf-sample build/conf/local.conf
+  ~/ubmc$ cp meta-ubmc/conf/bblayers.conf-sample build/conf/bblayers.conf
+
+If you have used the directory names specified in this document, it will not be necessary to edit these files. Now we need to set up the environment for Yocto using another script. From your home directory: ~/$ source poky-jethro/oe-init-build-env ~/ubmc/build
+Building the build
+
+Now that everything is set up, actually building the code is pretty simple. From your ~/ubmc/build direcory, simply type the Yocto bitbake command:
+
+  ~/ubmc/build$ bitbake console-image
+
+and go find something else to do. The system has to download the source code and tools for an entire operating system, build the cross tools, unpack and build several hundred packages and then build a root file system from those. Expect it to take at least 90 minutes the first time you run it. Once the system has been built once, it should only take a few minutes to re-build it after any changes.
+Deploying the resulting images to a uBMC
+
+The output of the Yocto build system is a compressed root file system which is to be found here:
+
+  ~/ubmc/build/tmp/deployimages/beaglebone/console-image-beaglebone-<date-time>.rootfs.tar.xz
+
+Copy this file to the uBMC eMMC memory (see below), un-tar it then remove the archive Your system should b=now be ready to run.
+
+
+Preparing the uBMC
+
+Assuming you have installed U-Boot as explained at the top of this Wiki page, you now need to install a temporary copy of Linux with which to prepare the eMMC and install your Yocto build. All of the files needed to do this can be found at: smb://172.27.32.4/sbeaver/ubmc-files
+
+Prepate a USB "thumb"drive by creating single partition and an ext2 files system on it. Download the files zImage, am335x-ubmc.dtb, rootfa.tar.gz and ramdisk.gz from smb://172.27.32.4/sbeaver/ubmc-files/Linux to the newly formatted USB drive.
+
+Remove the drive from your host computer and connect it to the uBMC. Now from the U-Boot prompt:
+
+  usb start
+  ext2load usb 0:1 0x82000000 /zImage
+  ext2load usb 0:1 0x88000000 /am335x-ubmc.dtb
+  ext2load usb 0:2 0x84000000 /ramdisk.gz
+  setenv bootargs "console=ttyO0,115200n8 root=/dev/ram0 rw initrd=0x84000000,32M ramdisk_size=32768"
+  bootz 0x82000000 - 0x88000000
+  
+
+If you have done everything correctly, the uBMC should now boot Linux and you should be at the shell prompt. Now we need to prepare the eMMC memory and install our Yocto operating system: Run fdisk on device /dev/mmcblk0 and create one new primary partition, accepting the defaults (entire disk) Reboot
+
+Noe we need to start our temporary USB Linux again:
+
+  usb start
+  ext2load usb 0:1 0x82000000 /zImage
+  ext2load usb 0:1 0x88000000 /am335x-ubmc.dtb
+  ext2load usb 0:2 0x84000000 /ramdisk.gz
+  setenv bootargs "console=ttyO0,115200n8 root=/dev/ram0 rw initrd=0x84000000,32M ramdisk_size=32768"
+  bootz 0x82000000 - 0x88000000
+
+Now the eMMC partition should be visible as /dev/mmcblk0p1 We need to format that as an ext2 file system
+
+  mkfs.ext2 /dev/mmcblk0p1
+
+Now we can install Yocto system:
+
+  mkdir -p /mnt/memstick
+  mkdir /mnt/mmc
+  mount -t ext2 /dev/mmcblk0p1 /mnt/mmc
+  mount -t ext2 /dev/sda1 /mnt/memstick
+  cd /mnt/mmc
+  cp /mnt/memstick/rootfs.tar.gz .
+  tar xvzf rootfs.tar.gz
+
+Reboot to the U-Boot prompt and we can attempt to boot from our new Yocto system
+
+  setenv bootargs console=ttyO0,115200,n8 root=/dev/mmcblk0p1 rw
+  ml=ext2load mmc 0:1 0x82000000 /boot/zImage
+  ext2load mmc 0:1 0x88000000 /boot/am335x-ubmc.dtb
+  bootz 0x82000000 - 0x88000000
+
+The uBMC should now boot from the Yocto image you previously installed. If you want it to do so automatically, reboot and re-enter the above commands as part of the U-Boot "bootcmd" variable.
+
+Sending discover...
+Sending select for 172.21.2.41...
+Lease of 172.21.2.41 obtained, lease time 7200
+/etc/udhcpc.d/50default: Adding DNS 172.21.2.1
+done.
+Starting system message bus: dbus.
+random: nonblocking pool is initialized
+Starting OpenBSD Secure Shell server: sshd
+done.
+Starting ntpd: done
+Starting syslogd/klogd: done
+
+Poky (Yocto Project uBMC) 2.0.1 micro-BMC
+
+
+            _                      ____  __  __  _____
+           (_)                    |  _ \|  \/  |/ ____|
+  _ __ ___  _  ___ _ __ ___ ______| |_) | \  / | |
+ |  _   _ \| |/ __| __/  _  \_____|  _ <| |\/| | |
+ | | | | | | | (__| | | (_) |     | |_) | |  | | |____
+ |_| |_| |_|_|\___|_|  \___/      |____/|_|  |_|\_____|
+
+
+micro-BMC login:

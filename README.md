@@ -168,7 +168,7 @@ Starting ntpd: done
 Starting syslogd/klogd: done
 
 Poky (Yocto Project uBMC) 2.0.1 micro-BMC
-
+<pre>
 
             _                      ____  __  __  _____
            (_)                    |  _ \\|  \\/  |/ ____|
@@ -179,3 +179,4 @@ Poky (Yocto Project uBMC) 2.0.1 micro-BMC
 
 
 micro-BMC login:
+</pre>

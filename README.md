@@ -58,10 +58,10 @@ If you are using Ubuntu, change teh default shell to Bash by typing "sudo dpkg-r
 
 From your home directory obtain and install a copy of the Yocto build system and some required layers:
 
-  ~/$ git clone -b jethro git://git.yoctoproject.org/poky.git poky-jethro
-  ~/$ cd poky-jethro
-  ~/poky-jeth$ git clone -b jethro git://git.openembedded.org/meta-openembedded
-  ~/poky-jetho$ git clone -b jethro https://github.com/meta-qt5/meta-qt5.git
+    ~/$ git clone -b jethro git://git.yoctoproject.org/poky.git poky-jethro
+    ~/$ cd poky-jethro
+    ~/poky-jeth$ git clone -b jethro git://git.openembedded.org/meta-openembedded
+    ~/poky-jetho$ git clone -b jethro https://github.com/meta-qt5/meta-qt5.git
 
 Change directories to your ~/ubmcdirectory, and dowload a copy of the ubmc layer meta-ubmc.tar.gz from smb://172.27.32.4/sbeaver
 
@@ -81,26 +81,26 @@ Unpack it using tar xvzf meta-ubmc.tar.gz You should now have a directory struct
 
 Prepare the build system by using the Yocto scripts to set up your directory tree and environment variables. From your home directory:
 
-  ~/$ source poky-jethro/oe-init-build-env ~/ubmc/build
+    ~/$ source poky-jethro/oe-init-build-env ~/ubmc/build
 
 Now we need to copy some sample configuration files from the ubmc layer. From the ~/ubmc directory:
 
-  ~/ubmc$ cp meta-ubmc/conf/local.conf-sample build/conf/local.conf
-  ~/ubmc$ cp meta-ubmc/conf/bblayers.conf-sample build/conf/bblayers.conf
+    ~/ubmc$ cp meta-ubmc/conf/local.conf-sample build/conf/local.conf
+    ~/ubmc$ cp meta-ubmc/conf/bblayers.conf-sample build/conf/bblayers.conf
 
 If you have used the directory names specified in this document, it will not be necessary to edit these files. Now we need to set up the environment for Yocto using another script. From your home directory: ~/$ source poky-jethro/oe-init-build-env ~/ubmc/build
 Building the build
 
 Now that everything is set up, actually building the code is pretty simple. From your ~/ubmc/build direcory, simply type the Yocto bitbake command:
 
-  ~/ubmc/build$ bitbake console-image
+    ~/ubmc/build$ bitbake console-image
 
 and go find something else to do. The system has to download the source code and tools for an entire operating system, build the cross tools, unpack and build several hundred packages and then build a root file system from those. Expect it to take at least 90 minutes the first time you run it. Once the system has been built once, it should only take a few minutes to re-build it after any changes.
 Deploying the resulting images to a uBMC
 
 The output of the Yocto build system is a compressed root file system which is to be found here:
 
-  ~/ubmc/build/tmp/deployimages/beaglebone/console-image-beaglebone-<date-time>.rootfs.tar.xz
+    ~/ubmc/build/tmp/deployimages/beaglebone/console-image-beaglebone-<date-time>.rootfs.tar.xz
 
 Copy this file to the uBMC eMMC memory (see below), un-tar it then remove the archive Your system should b=now be ready to run.
 
@@ -113,45 +113,45 @@ Prepate a USB "thumb"drive by creating single partition and an ext2 files system
 
 Remove the drive from your host computer and connect it to the uBMC. Now from the U-Boot prompt:
 
-  usb start
-  ext2load usb 0:1 0x82000000 /zImage
-  ext2load usb 0:1 0x88000000 /am335x-ubmc.dtb
-  ext2load usb 0:2 0x84000000 /ramdisk.gz
-  setenv bootargs "console=ttyO0,115200n8 root=/dev/ram0 rw initrd=0x84000000,32M ramdisk_size=32768"
-  bootz 0x82000000 - 0x88000000
+    usb start
+    ext2load usb 0:1 0x82000000 /zImage
+    ext2load usb 0:1 0x88000000 /am335x-ubmc.dtb
+    ext2load usb 0:2 0x84000000 /ramdisk.gz
+    setenv bootargs "console=ttyO0,115200n8 root=/dev/ram0 rw initrd=0x84000000,32M ramdisk_size=32768"
+    bootz 0x82000000 - 0x88000000
   
 
 If you have done everything correctly, the uBMC should now boot Linux and you should be at the shell prompt. Now we need to prepare the eMMC memory and install our Yocto operating system: Run fdisk on device /dev/mmcblk0 and create one new primary partition, accepting the defaults (entire disk) Reboot
 
 Noe we need to start our temporary USB Linux again:
 
-  usb start
-  ext2load usb 0:1 0x82000000 /zImage
-  ext2load usb 0:1 0x88000000 /am335x-ubmc.dtb
-  ext2load usb 0:2 0x84000000 /ramdisk.gz
-  setenv bootargs "console=ttyO0,115200n8 root=/dev/ram0 rw initrd=0x84000000,32M ramdisk_size=32768"
-  bootz 0x82000000 - 0x88000000
+    usb start
+    ext2load usb 0:1 0x82000000 /zImage
+    ext2load usb 0:1 0x88000000 /am335x-ubmc.dtb
+    ext2load usb 0:2 0x84000000 /ramdisk.gz
+    setenv bootargs "console=ttyO0,115200n8 root=/dev/ram0 rw initrd=0x84000000,32M ramdisk_size=32768"
+    bootz 0x82000000 - 0x88000000
 
 Now the eMMC partition should be visible as /dev/mmcblk0p1 We need to format that as an ext2 file system
 
-  mkfs.ext2 /dev/mmcblk0p1
+    mkfs.ext2 /dev/mmcblk0p1
 
 Now we can install Yocto system:
 
-  mkdir -p /mnt/memstick
-  mkdir /mnt/mmc
-  mount -t ext2 /dev/mmcblk0p1 /mnt/mmc
-  mount -t ext2 /dev/sda1 /mnt/memstick
-  cd /mnt/mmc
-  cp /mnt/memstick/rootfs.tar.gz .
-  tar xvzf rootfs.tar.gz
+    mkdir -p /mnt/memstick
+    mkdir /mnt/mmc
+    mount -t ext2 /dev/mmcblk0p1 /mnt/mmc
+    mount -t ext2 /dev/sda1 /mnt/memstick
+    cd /mnt/mmc
+    cp /mnt/memstick/rootfs.tar.gz .
+    tar xvzf rootfs.tar.gz
 
 Reboot to the U-Boot prompt and we can attempt to boot from our new Yocto system
 
-  setenv bootargs console=ttyO0,115200,n8 root=/dev/mmcblk0p1 rw
-  ml=ext2load mmc 0:1 0x82000000 /boot/zImage
-  ext2load mmc 0:1 0x88000000 /boot/am335x-ubmc.dtb
-  bootz 0x82000000 - 0x88000000
+    setenv bootargs console=ttyO0,115200,n8 root=/dev/mmcblk0p1 rw
+    ml=ext2load mmc 0:1 0x82000000 /boot/zImage
+    ext2load mmc 0:1 0x88000000 /boot/am335x-ubmc.dtb
+    bootz 0x82000000 - 0x88000000
 
 The uBMC should now boot from the Yocto image you previously installed. If you want it to do so automatically, reboot and re-enter the above commands as part of the U-Boot "bootcmd" variable.
 

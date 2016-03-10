@@ -154,7 +154,7 @@ Reboot to the U-Boot prompt and we can attempt to boot from our new Yocto system
   bootz 0x82000000 - 0x88000000
 
 The uBMC should now boot from the Yocto image you previously installed. If you want it to do so automatically, reboot and re-enter the above commands as part of the U-Boot "bootcmd" variable.
-
+`
 Sending discover...
 Sending select for 172.21.2.41...
 Lease of 172.21.2.41 obtained, lease time 7200
@@ -168,7 +168,7 @@ Starting ntpd: done
 Starting syslogd/klogd: done
 
 Poky (Yocto Project uBMC) 2.0.1 micro-BMC
-<pre>
+
 
             _                      ____  __  __  _____
            (_)                    |  _ \\|  \\/  |/ ____|
@@ -179,4 +179,4 @@ Poky (Yocto Project uBMC) 2.0.1 micro-BMC
 
 
 micro-BMC login:
-</pre>
+`

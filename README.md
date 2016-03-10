@@ -5,20 +5,7 @@ This layer depends on:
     revision: HEAD
     commit: b1f23d1
 
-    URI: git://git.openembedded.org/meta-openembedded
-    branch: jethro 
-    revision: HEAD
-    commit: dc56349
-
-    URI: https://github.com/meta-qt5/meta-qt5.git
-    branch: fido
-    revision: HEAD
-    commit: 9bfcf79
-
-    meta-ubmc layer maintainer: Steve Beaver <sbaver@netgate.com>
-
-
-
+    meta-ubmc layer maintainer: Steve Beaver <sbeaver@netgate.com>
 
 Major Software Versions
 

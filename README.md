@@ -63,7 +63,7 @@ From your home directory obtain and install a copy of the Yocto build system and
     ~/poky-jeth$ git clone -b jethro git://git.openembedded.org/meta-openembedded
     ~/poky-jetho$ git clone -b jethro https://github.com/meta-qt5/meta-qt5.git
 
-Change directories to your ~/ubmcdirectory, and dowload a copy of the ubmc layer meta-ubmc.tar.gz from smb://172.27.32.4/sbeaver
+Change directories to your ~/ubmcdirectory, and git clone THIS PROJECT (git.pfmechanics.com/netgate/meta-ubmc)
 
 Unpack it using tar xvzf meta-ubmc.tar.gz You should now have a directory structure like this:
 

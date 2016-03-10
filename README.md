@@ -26,7 +26,7 @@ Major Software Versions
 * Linux kernel 4.4.3 (linux-stable)
 * U-Boot 2016.01
 
-Building Linux for the uBMC
+## Building Linux for the uBMC
 
 The uBMC Linux kernel and root file system are produced by the Yocto project build system. https://www.yoctoproject.org/ along with a custom uBMC Board Support Package (BSP) layer named meta-ubmc
 
@@ -48,7 +48,7 @@ On a Linux system (Ubuntu, CentOS, Fedora or Debian are recommended) ensure that
     texinfo
     u-boot-tools
 
-Downloading the build environment and layers
+### Downloading the build environment and layers
 
 From your home directory, create a ubmc and a build directory:
 
@@ -77,7 +77,7 @@ Unpack it using tar xvzf meta-ubmc.tar.gz You should now have a directory struct
      |--poky-jethro
 
 
-Preparing the build system
+### Preparing the build system
 
 Prepare the build system by using the Yocto scripts to set up your directory tree and environment variables. From your home directory:
 
@@ -105,7 +105,7 @@ The output of the Yocto build system is a compressed root file system which is t
 Copy this file to the uBMC eMMC memory (see below), un-tar it then remove the archive Your system should b=now be ready to run.
 
 
-Preparing the uBMC
+### Preparing the uBMC
 
 Assuming you have installed U-Boot as explained at the top of this Wiki page, you now need to install a temporary copy of Linux with which to prepare the eMMC and install your Yocto build. All of the files needed to do this can be found at: smb://172.27.32.4/sbeaver/ubmc-files
 

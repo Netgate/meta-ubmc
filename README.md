@@ -7,6 +7,8 @@ This layer depends on:
 
     meta-ubmc layer maintainer: Steve Beaver <sbeaver@netgate.com>
 
+This layer was created using the Beaglebone-black layer developed by Jumpnow Technologies LLC as a reference. http://www.jumpnowtek.com/
+
 Major Software Versions
 
 * Yocto 2.0.1 [jethro] branch

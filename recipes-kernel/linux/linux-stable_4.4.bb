@@ -7,7 +7,7 @@ COMPATIBLE_MACHINE = "beaglebone"
 RDEPENDS_kernel-base += "kernel-devicetree"
 
 KERNEL_DEVICETREE_beaglebone = " \
-    am335x-ubmc.dtb \
+    ubmc.dtb \
  "
 
 LINUX_VERSION = "4.4"
@@ -27,5 +27,4 @@ SRC_URI = " \
     file://0001-spidev-Add-a-generic-compatible-id.patch \
     file://0002-dts-Revoke-Beaglebone-i2c2-definitions.patch \
     file://0003-Add-ft5x06_ts-touchscreen-driver.patch  \
-    file://0004-dts-add-uBMC.patch \
  "

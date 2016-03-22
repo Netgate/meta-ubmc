@@ -22,7 +22,7 @@ The uBMC Linux kernel and root file system are produced by the Yocto project bui
 If you follow the instructions that follow carefully, it should be possible to create a complete working system from a single shell command.
 Preparing the build system
 
-On a Linux system (Ubuntu, CentOS, Fedora or Debian are recommended) ensure that the followinf packages are installed:
+On a Linux system (Ubuntu, CentOS, Fedora or Debian are recommended) ensure that the following packages are installed:
 
     bc
     build-essential
@@ -43,7 +43,7 @@ From your home directory, create a ubmc and a build directory:
 
   ~/$ mkdir -p ubmc/build
 
-If you are using Ubuntu, change teh default shell to Bash by typing "sudo dpkg-reconfigure dash" and selecting "No" from the menu displayed.
+If you are using Ubuntu, change the default shell to Bash by typing "sudo dpkg-reconfigure dash" and selecting "No" from the menu displayed.
 
 From your home directory obtain and install a copy of the Yocto build system and some required layers:
 
@@ -52,7 +52,7 @@ From your home directory obtain and install a copy of the Yocto build system and
     ~/poky-jeth$ git clone -b jethro git://git.openembedded.org/meta-openembedded
     ~/poky-jetho$ git clone -b jethro https://github.com/meta-qt5/meta-qt5.git
 
-Change directories to your ~/ubmcdirectory, and git clone THIS PROJECT (git.pfmechanics.com/netgate/meta-ubmc)
+Change directories to your ~/ubmcdirectory, and git clone THIS PROJECT (github.com.com/netgate/meta-ubmc)
 
 Unpack it using tar xvzf meta-ubmc.tar.gz You should now have a directory structure like this:
 
@@ -94,55 +94,11 @@ The output of the Yocto build system is a compressed root file system which is t
 Copy this file to the uBMC eMMC memory (see below), un-tar it then remove the archive Your system should b=now be ready to run.
 
 
-### Preparing the uBMC
+The uBMC should now boot from the Yocto/uBMC image.
 
-Assuming you have installed U-Boot as explained at the top of this Wiki page, you now need to install a temporary copy of Linux with which to prepare the eMMC and install your Yocto build. All of the files needed to do this can be found at: smb://172.27.32.4/sbeaver/ubmc-files
+COnfigure hte boot loader to load the kernel from /boot/zImage and the device tree from /boot/ubmc.dtb. THe root file system should be specified in the boodcmd string as: "root=/dev/mmcblk0p1 rw" (Without the quotes)
 
-Prepate a USB "thumb"drive by creating single partition and an ext2 files system on it. Download the files zImage, am335x-ubmc.dtb, rootfa.tar.gz and ramdisk.gz from smb://172.27.32.4/sbeaver/ubmc-files/Linux to the newly formatted USB drive.
-
-Remove the drive from your host computer and connect it to the uBMC. Now from the U-Boot prompt:
-
-    usb start
-    ext2load usb 0:1 0x82000000 /zImage
-    ext2load usb 0:1 0x88000000 /am335x-ubmc.dtb
-    ext2load usb 0:2 0x84000000 /ramdisk.gz
-    setenv bootargs "console=ttyO0,115200n8 root=/dev/ram0 rw initrd=0x84000000,32M ramdisk_size=32768"
-    bootz 0x82000000 - 0x88000000
-  
-
-If you have done everything correctly, the uBMC should now boot Linux and you should be at the shell prompt. Now we need to prepare the eMMC memory and install our Yocto operating system: Run fdisk on device /dev/mmcblk0 and create one new primary partition, accepting the defaults (entire disk) Reboot
-
-Noe we need to start our temporary USB Linux again:
-
-    usb start
-    ext2load usb 0:1 0x82000000 /zImage
-    ext2load usb 0:1 0x88000000 /am335x-ubmc.dtb
-    ext2load usb 0:2 0x84000000 /ramdisk.gz
-    setenv bootargs "console=ttyO0,115200n8 root=/dev/ram0 rw initrd=0x84000000,32M ramdisk_size=32768"
-    bootz 0x82000000 - 0x88000000
-
-Now the eMMC partition should be visible as /dev/mmcblk0p1 We need to format that as an ext2 file system
-
-    mkfs.ext2 /dev/mmcblk0p1
-
-Now we can install Yocto system:
-
-    mkdir -p /mnt/memstick
-    mkdir /mnt/mmc
-    mount -t ext2 /dev/mmcblk0p1 /mnt/mmc
-    mount -t ext2 /dev/sda1 /mnt/memstick
-    cd /mnt/mmc
-    cp /mnt/memstick/rootfs.tar.gz .
-    tar xvzf rootfs.tar.gz
-
-Reboot to the U-Boot prompt and we can attempt to boot from our new Yocto system
-
-    setenv bootargs console=ttyO0,115200,n8 root=/dev/mmcblk0p1 rw
-    ml=ext2load mmc 0:1 0x82000000 /boot/zImage
-    ext2load mmc 0:1 0x88000000 /boot/am335x-ubmc.dtb
-    bootz 0x82000000 - 0x88000000
-
-The uBMC should now boot from the Yocto image you previously installed. If you want it to do so automatically, reboot and re-enter the above commands as part of the U-Boot "bootcmd" variable.
+Details on preparing the uBMC to recive the Yocto built image are available on request from infor@netgate.com
 
     Sending discover...
     Sending select for 172.21.2.41...

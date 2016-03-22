@@ -171,7 +171,7 @@
 
 &usb0 {
 	status = "okay";
-	dr_mode = "peripheral";
+	dr_mode = "host";
 };
 
 &usb1 {
@@ -204,6 +204,12 @@
 
 &tscadc {
 	status = "okay";
+
+	adc {
+		#io-channel-cells = <0x1>;
+		compatible = "ti,am3359-adc";
+		ti,adc-channels = <0x00 0x01 0x02 0x03 0x4 0x5 0x6 0x7>;
+	};
 };
 
 &cpsw_emac0 {

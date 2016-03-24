@@ -15,6 +15,8 @@ Major Software Versions
 * Linux kernel 4.4.3 (linux-stable)
 * U-Boot 2016.01
 
+Recommended reading: http://www.yoctoproject.org/bulk/devday-eu-2014/ypdd14-blanc-errors.pdf
+
 ## Building Linux for the uBMC
 
 The uBMC Linux kernel and root file system are produced by the Yocto project build system. https://www.yoctoproject.org/ along with a custom uBMC Board Support Package (BSP) layer named meta-ubmc

@@ -1,0 +1,59 @@
+From 734a811fc5483f1011e63f286372e9cbc6b7fad6 Mon Sep 17 00:00:00 2001
+From: Steve Beaver <sbeaver@netgate.com>
+Date: Fri, 25 Mar 2016 18:27:13 -0400
+Subject: [PATCH] Makefile-update
+
+Signed-off-by: Steve Beaver <sbeaver@netgate.com>
+---
+ Makefile.in | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index b300f3c..bc7b9eb 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -72,7 +72,7 @@ NC_WORKINGDIR_PATH = $(DESTDIR)/@NC_WORKINGDIR_PATH@
+ SETBIT = @SETBIT@
+ SETUSER = @SETUSER@
+ SETGROUP = @SETGROUP@
+-IDGIT = "built from git $(shell git show --pretty=oneline | head -1 | cut -c -20)"
++IDGIT = "built from git $(shell pushd ../git;git show --pretty=oneline | head -1 | cut -c -20;popd)"
+ IDNOGIT = "released as version $(VERSION)"
+ LIBS = @LDFLAGS@ @LIBS@
+ CFLAGS = -Wall @CFLAGS@
+@@ -95,7 +95,7 @@ PYSRCS = python/netconf.c \
+ 	python/session.c
+ endif
+ 
+-INCLUDES= -I$(abs_srcdir)/src
++INCLUDES= -I$(abs_srcdir)/src -I$(abs_srcdir)/../build/src  -I$(abs_srcdir)/../../../libxml2/2.9.2-r0/package/usr/include/libxml2
+ 
+ ifeq "$(shell pwd)" "$(shell $(readlink) -f $(srcdir))"
+ OBJDIR = .obj
+@@ -299,7 +299,7 @@ install: all install-devel install-doc $(INSTALLPYAPI)
+ 	$(INSTALL) -m 775 -d $(DESTDIR)/$(libdir)
+ 	$(LIBTOOL) --mode=install cp $(NAME).la $(DESTDIR)/$(libdir)
+ 	$(LIBTOOL) --mode=finish $(DESTDIR)/$(libdir)
+-	@if test "`id -u`" = "0"; then $(LDCONFIG); fi
++
+ 	[ -d "$(NC_WORKINGDIR_PATH)" ] || \
+ 		mkdir -p $(NC_WORKINGDIR_PATH)
+ 	chmod 700 $(NC_WORKINGDIR_PATH)
+@@ -348,10 +348,10 @@ install-devel: $(LNCTOOL) $(NAME).la $(HDRS_PUBL_ROOT) $(HDRS_PUBL_SUBDIR) $(NAM
+ 	$(INSTALL_DATA) $(NAME).pc $(DESTDIR)/$(libdir)/pkgconfig/$(NAME).pc;
+ 	[ -d $(DESTDIR)/$(bindir) ] || \
+ 	   	(mkdir -p $(DESTDIR)/$(bindir); chmod 755 $(DESTDIR)/$(bindir)); \
+-	$(INSTALL_PROGRAM) $(LNCTOOL).install $(DESTDIR)/$(bindir)/lnctool; \
+-	$(INSTALL_DATA) dev-tools/lnctool/rnglib/* $(DESTDIR)/$(datadir)/$(NAME)/rnglib/; \
+-	$(INSTALL_DATA) dev-tools/lnctool/xslt/* $(DESTDIR)/$(datadir)/$(NAME)/xslt/;
+-	$(INSTALL_DATA) dev-tools/lnctool/generator/* $(DESTDIR)/$(datadir)/$(NAME)/templates/;
++	$(INSTALL_PROGRAM) ../git/$(LNCTOOL).install $(DESTDIR)/$(bindir)/lnctool; \
++	$(INSTALL_DATA) ../git/dev-tools/lnctool/rnglib/* $(DESTDIR)/$(datadir)/$(NAME)/rnglib/; \
++	$(INSTALL_DATA) ../git/dev-tools/lnctool/xslt/* $(DESTDIR)/$(datadir)/$(NAME)/xslt/;
++	$(INSTALL_DATA) ../git/dev-tools/lnctool/generator/* $(DESTDIR)/$(datadir)/$(NAME)/templates/;
+ 
+ .PHONY: install-doc
+ install-doc: doc
+-- 
+1.9.1
+

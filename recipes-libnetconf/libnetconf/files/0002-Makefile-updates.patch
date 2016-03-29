@@ -1,15 +1,15 @@
-From 734a811fc5483f1011e63f286372e9cbc6b7fad6 Mon Sep 17 00:00:00 2001
+From 5c3602514a66bbe579e3557a97a8d5c337a6bca5 Mon Sep 17 00:00:00 2001
 From: Steve Beaver <sbeaver@netgate.com>
-Date: Fri, 25 Mar 2016 18:27:13 -0400
-Subject: [PATCH] Makefile-update
+Date: Tue, 29 Mar 2016 11:37:44 -0400
+Subject: [PATCH] Fix models
 
 Signed-off-by: Steve Beaver <sbeaver@netgate.com>
 ---
- Makefile.in | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ Makefile.in | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/Makefile.in b/Makefile.in
-index b300f3c..bc7b9eb 100644
+index b300f3c..c9b14af 100644
 --- a/Makefile.in
 +++ b/Makefile.in
 @@ -72,7 +72,7 @@ NC_WORKINGDIR_PATH = $(DESTDIR)/@NC_WORKINGDIR_PATH@
@@ -30,7 +30,21 @@ index b300f3c..bc7b9eb 100644
  
  ifeq "$(shell pwd)" "$(shell $(readlink) -f $(srcdir))"
  OBJDIR = .obj
-@@ -299,7 +299,7 @@ install: all install-devel install-doc $(INSTALLPYAPI)
+@@ -199,7 +199,7 @@ LNCDS_FILES = dev-tools/lncdatastore/main.c \
+ 
+ XML_SRCS = models/ietf-netconf-acm-config.rng.in
+ 
+-BUILT_RNGS = $(XML_SRCS:models/%.rng.in=models/%.rng)
++BUILT_RNGS = $(XML_SRCS:../git/models/%.rng.in=../git/models/%.rng)
+ 
+ models/%.rng: models/%.rng.in
+ 	@sed -e "s/\@DATAROOTDIR\@/$(subst /,\/,$(datarootdir))/g" $< > $@
+@@ -295,16 +295,16 @@ rpm: tarball $(TARBALLPYAPI)
+ 	fi
+ 
+ .PHONY: install
+-install: all install-devel install-doc $(INSTALLPYAPI)
++install: all install-devel $(INSTALLPYAPI)
  	$(INSTALL) -m 775 -d $(DESTDIR)/$(libdir)
  	$(LIBTOOL) --mode=install cp $(NAME).la $(DESTDIR)/$(libdir)
  	$(LIBTOOL) --mode=finish $(DESTDIR)/$(libdir)
@@ -39,6 +53,13 @@ index b300f3c..bc7b9eb 100644
  	[ -d "$(NC_WORKINGDIR_PATH)" ] || \
  		mkdir -p $(NC_WORKINGDIR_PATH)
  	chmod 700 $(NC_WORKINGDIR_PATH)
+-	$(INSTALL_DATA) models/ietf-netconf-acm*.rng models/ietf-netconf-acm-schematron.xsl $(NC_WORKINGDIR_PATH)/
+-	$(INSTALL_DATA) models/yin2yang.xsl $(NC_WORKINGDIR_PATH)/
++	$(INSTALL_DATA) ../git/models/ietf-netconf-acm*.rng ../git/models/ietf-netconf-acm-schematron.xsl $(NC_WORKINGDIR_PATH)/
++	$(INSTALL_DATA) ../git/models/yin2yang.xsl $(NC_WORKINGDIR_PATH)/
+ 	@if test "$$(($(SETBIT) & 1))" = "1"; then \
+ 		if test -n "$(SETUSER)"; then \
+ 			chown $(SETUSER) $(NC_WORKINGDIR_PATH) || \
 @@ -348,10 +348,10 @@ install-devel: $(LNCTOOL) $(NAME).la $(HDRS_PUBL_ROOT) $(HDRS_PUBL_SUBDIR) $(NAM
  	$(INSTALL_DATA) $(NAME).pc $(DESTDIR)/$(libdir)/pkgconfig/$(NAME).pc;
  	[ -d $(DESTDIR)/$(bindir) ] || \

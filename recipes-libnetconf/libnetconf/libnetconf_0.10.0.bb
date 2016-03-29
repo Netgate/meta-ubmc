@@ -8,6 +8,8 @@ SRC_URI = " \
     git://code.google.com/p/libnetconf/;protocol=https;branch=master \
     file://0001-Remove-xml2-config-and-xslt-config-checks.patch \
     file://0002-Makefile-updates.patch \
+    file://0003-Fix-datastore-include-path.patch \
+    file://0004-Fix-file-include-path.patch \
 "
 
 SRCREV="${AUTOREV}"
@@ -15,11 +17,13 @@ PR = "r1"
 
 DEPENDS = "libxml2 libxslt libssh openssl curl"
 
+FILES_${PN} += "${libdir}/${PN}/libnetconf.a"
+
 S = "${WORKDIR}/git"
+
+FILES_${PN} += "/usr/bin"
 
 inherit autotools pkgconfig gettext
 
-EXTRA_OECONF = "libtool=${STAGING_BINDIR_CROSS}/${HOST_SYS}-libtool \
-		--libdir=/home/sbeaver/ubmc/build/tmp/sysroots/beaglebone/usr/lib \ 
-		--includedir=/home/sbeaver/ubmc/build/tmp/sysroots/beaglebone/usr/include" 
+EXTRA_OECONF = "libtool=${STAGING_BINDIR_CROSS}/${HOST_SYS}-libtool" 
 

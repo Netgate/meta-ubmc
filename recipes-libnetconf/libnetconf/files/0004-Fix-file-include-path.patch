@@ -1,0 +1,26 @@
+From 7ab485ca21e620a1e007c47060ae0393753cbbd2 Mon Sep 17 00:00:00 2001
+From: Steve Beaver <sbeaver@netgate.com>
+Date: Tue, 29 Mar 2016 09:38:03 -0400
+Subject: [PATCH] Fix file include path
+
+Signed-off-by: Steve Beaver <sbeaver@netgate.com>
+---
+ src/datastore/file/datastore_file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/datastore/file/datastore_file.c b/src/datastore/file/datastore_file.c
+index ec5660f..5051d8f 100644
+--- a/src/datastore/file/datastore_file.c
++++ b/src/datastore/file/datastore_file.c
+@@ -58,7 +58,7 @@
+ #include "../../error.h"
+ #include "../../session.h"
+ #include "../../nacm.h"
+-#include "../../config.h"
++#include <config.h>
+ #include "../datastore_internal.h"
+ #include "datastore_file.h"
+ #include "../edit_config.h"
+-- 
+1.9.1
+

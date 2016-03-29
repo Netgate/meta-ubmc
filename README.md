@@ -84,14 +84,14 @@ Building the build
 
 Now that everything is set up, actually building the code is pretty simple. From your ~/ubmc/build direcory, simply type the Yocto bitbake command:
 
-    ~/ubmc/build$ bitbake console-image
+    ~/ubmc/build$ bitbake ubmc-image
 
 and go find something else to do. The system has to download the source code and tools for an entire operating system, build the cross tools, unpack and build several hundred packages and then build a root file system from those. Expect it to take at least 90 minutes the first time you run it. Once the system has been built once, it should only take a few minutes to re-build it after any changes.
 Deploying the resulting images to a uBMC
 
 The output of the Yocto build system is a compressed root file system which is to be found here:
 
-    ~/ubmc/build/tmp/deployimages/beaglebone/console-image-beaglebone-<date-time>.rootfs.tar.xz
+    ~/ubmc/build/tmp/deployimages/beaglebone/ubmc-image-beaglebone-<date-time>.rootfs.tar.xz
 
 Copy this file to the uBMC eMMC memory (see below), un-tar it then remove the archive Your system should b=now be ready to run.
 

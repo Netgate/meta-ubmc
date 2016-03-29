@@ -1,5 +1,5 @@
-SUMMARY = "A console development image with some C/C++ dev tools"
-HOMEPAGE = "http://www.jumpnowtek.com"
+SUMMARY = "A basic image with dev tools and NEETCONF for the micro-BMC"
+HOMEPAGE = "http://www.netgate.com"
 LICENSE = "MIT"
 
 IMAGE_FEATURES += "package-management"
@@ -62,6 +62,7 @@ DEV_EXTRAS = " \
     zeromq \
     zeromq-dev \
     iptables \
+    libnetconf \
  "
 
 EXTRA_TOOLS_INSTALL = " \
@@ -112,5 +113,5 @@ ROOTFS_POSTPROCESS_COMMAND += " \
     disable_bootlogd ; \
  "
 
-export IMAGE_BASENAME = "console-image"
+export IMAGE_BASENAME = "ubmc-image"
 

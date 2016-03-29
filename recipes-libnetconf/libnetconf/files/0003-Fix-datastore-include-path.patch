@@ -1,0 +1,26 @@
+From d450a5b2957ad1ef0cf672410b3ac2f219ee38cf Mon Sep 17 00:00:00 2001
+From: Steve Beaver <sbeaver@netgate.com>
+Date: Tue, 29 Mar 2016 09:36:02 -0400
+Subject: [PATCH] Fix datastore include path
+
+Signed-off-by: Steve Beaver <sbeaver@netgate.com>
+---
+ src/datastore/custom/datastore_custom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/datastore/custom/datastore_custom.c b/src/datastore/custom/datastore_custom.c
+index da360c6..603c5dd 100644
+--- a/src/datastore/custom/datastore_custom.c
++++ b/src/datastore/custom/datastore_custom.c
+@@ -53,7 +53,7 @@
+ #include "../../error.h"
+ #include "../../session.h"
+ #include "../../nacm.h"
+-#include "../../config.h"
++#include <config.h>
+ #include "../datastore_internal.h"
+ #include "datastore_custom_private.h"
+ #include "datastore_custom.h"
+-- 
+1.9.1
+

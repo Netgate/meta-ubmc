@@ -5,7 +5,7 @@ LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://COPYING;md5=22c218798908f95216326c4df42637b5"
 
 SRC_URI = " \
-    git://code.google.com/p/libnetconf/;protocol=https;branch=master \
+    git://github.com/CESNET/libnetconf.git \
     file://0001-Remove-xml2-config-and-xslt-config-checks.patch \
     file://0002-Makefile-updates.patch \
     file://0003-Fix-datastore-include-path.patch \
@@ -15,7 +15,7 @@ SRC_URI = " \
 SRCREV="${AUTOREV}"
 PR = "r1"
 
-DEPENDS = "libxml2 libxslt libssh openssl curl"
+DEPENDS = "libxml2 libxslt libssh openssl curl python"
 
 FILES_${PN} += "${libdir}/${PN}/libnetconf.a"
 

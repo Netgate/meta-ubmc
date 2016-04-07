@@ -1,36 +1,36 @@
-From e6806f6b56c9b477645933388a4a37ed5261f0f1 Mon Sep 17 00:00:00 2001
+From ebcb2385c3f841127a3b03d17a9284557adb1348 Mon Sep 17 00:00:00 2001
 From: Steve Beaver <sbeaver@netgate.com>
-Date: Fri, 25 Mar 2016 15:07:25 -0400
-Subject: [PATCH] patch
+Date: Thu, 7 Apr 2016 10:33:33 -0400
+Subject: [PATCH] Remove xslt header check
 
 Signed-off-by: Steve Beaver <sbeaver@netgate.com>
 ---
- configure.in | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ configure.in | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/configure.in b/configure.in
-index a53e37c..09693c0 100644
+index e26f108..2b5e90e 100644
 --- a/configure.in
 +++ b/configure.in
-@@ -48,7 +48,7 @@ PACKAGE_VERSION=`cut -f1 ./VERSION | tr -d '\n'`
- AC_SUBST(PACKAGE_VERSION)
+@@ -49,6 +49,8 @@ AC_SUBST(PACKAGE_VERSION)
  LIBTOOL_VERSION_INFO=`echo ${PACKAGE_VERSION} | sed -e 's/\./:/g' `
  AC_SUBST(LIBTOOL_VERSION_INFO)
--
+ 
 +pushd ../git
++
  if test -n "`git branch | grep '\* *master'`"; then
  	RELEASE_TAG="_trunk"
  fi
-@@ -68,7 +68,7 @@ USERNAME=`git config --get user.name`
- USERMAIL=`git config --get user.email`
+@@ -69,6 +71,8 @@ USERMAIL=`git config --get user.email`
  AC_SUBST(USERNAME)
  AC_SUBST(USERMAIL)
--
+ 
 +popd
++
  NC_WORKINGDIR_PATH="/var/lib/$PACKAGE_NAME/"
  SETBIT=0
  SETUSER=""
-@@ -105,9 +105,8 @@ AC_ARG_WITH([libxml2],
+@@ -105,9 +109,8 @@ AC_ARG_WITH([libxml2],
  		if test "$XML2_CONFIG" = "no"; then
  			AC_MSG_ERROR([Missing development package of libxml2.])
  		fi
@@ -38,45 +38,49 @@ index a53e37c..09693c0 100644
 -		LIBXML2_LIBS="`$withval/xml2-config --libs`"
 -		LIBS="$LIBXML2_LIBS $LIBS"
 +		CFLAGS=" $CFLAGS"
-+		LIBS="$LIBS"
++		LIBS=" $LIBS"
  		WITH_LIBXML2="$withval"
  		CONFIGURE_PARAMS="--with-libxml2=$withval $CONFIGURE_PARAMS"
  		AC_SUBST(LIBXML2_LIBS)
-@@ -121,8 +120,8 @@ AC_ARG_WITH([libxslt],
- 		if test "$XSLT_CONFIG" = "no"; then
- 			AC_MSG_ERROR([Missing development package of libxslt.])
+@@ -121,8 +124,8 @@ AC_ARG_WITH([libxslt],
+ 		if test "$XSLT_CONFIG" != "no"; then
+ 			AC_MSG_ERROR([Missing xslt-config to get XSLT flags for compilation.])
  		fi
 -		CFLAGS="`$withval/xslt-config --cflags` $CFLAGS"
 -		LIBS="`$withval/xslt-config --libs` $LIBS"
-+		CFLAGS="$CFLAGS"
-+		LIBS="$LIBS"
++		CFLAGS=" $CFLAGS"
++		LIBS=" $LIBS"
  		WITH_LIBXSLT="$withval"
  		CONFIGURE_PARAMS="--with-libxslt=$withval $CONFIGURE_PARAMS"
  	]
-@@ -436,9 +435,8 @@ if test -z "$WITH_LIBXML2" ; then
+@@ -455,9 +458,8 @@ if test -z "$WITH_LIBXML2" ; then
  	if test "$XML2_CONFIG" = "no"; then
  		AC_MSG_ERROR([Missing development package of libxml2.])
  	fi
 -	CFLAGS="`xml2-config --cflags` $CFLAGS"
 -	LIBXML2_LIBS="`xml2-config --libs`"
 -	LIBS="$LIBXML2_LIBS $LIBS"
-+	CFLAGS="$CFLAGS"
-+	LIBS="$LIBS"
++	CFLAGS=" $CFLAGS"
++	LIBS=" $LIBS"
  	AC_SUBST(LIBXML2_LIBS)
  fi
- AC_CHECK_LIB([xml2], [xmlDOMWrapReconcileNamespaces], [HAVE_LIBXML2_RECONNS="#define HAVE_XMLDOMWRAPRECONCILENAMESPACE"], [HAVE_LIBXML2_RECONNS="#undef HAVE_XMLDOMWRAPRECONCILENAMESPACE"]
-@@ -450,8 +448,8 @@ if test "$validation" = "yes" -a -z "$WITH_LIBXSLT" ; then
- 	if test "$XSLT_CONFIG" = "no"; then
- 		AC_MSG_ERROR([Missing development package of libxslt.])
+ AC_CHECK_LIB([xml2], [xmlDOMWrapReconcileNamespaces],
+@@ -470,12 +472,11 @@ if test "$validation" = "yes" -o "$yang" = "yes"; then
+ 	if test -z "$WITH_LIBXSLT" ; then
+ 		AC_CHECK_PROG([XSLT_CONFIG], [xslt-config], [yes], [no], [$WITH_LIBXSLT $PATH])
+ 		if test "$XSLT_CONFIG" != "no"; then
+-			CFLAGS="`xslt-config --cflags` $CFLAGS"
+-			LIBS="`xslt-config --libs` $LIBS"
++			CFLAGS=" $CFLAGS"
++			LIBS=" $LIBS"
+ 		fi
  	fi
--	CFLAGS="`xslt-config --cflags` $CFLAGS"
--	LIBS="`xslt-config --libs` $LIBS"
-+	CFLAGS="$CFLAGS"
-+	LIBS="$LIBS"
+ 	AC_CHECK_LIB([xslt], [xsltApplyStylesheet], [], AC_MSG_ERROR([Missing libxslt library]))
+-	AC_CHECK_HEADERS([libxslt/transform.h libxslt/xsltInternals.h], [], AC_MSG_ERROR([Missing libxslt headers]))
  fi
  
  if test "$libssh" = "yes"; then
-@@ -508,7 +506,6 @@ fi
+@@ -532,7 +533,6 @@ fi
  
  if test "$url" = "yes"; then
  	### libcurl ###

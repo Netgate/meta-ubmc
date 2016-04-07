@@ -9,6 +9,7 @@ inherit core-image
 
 CORE_OS = " \
     openssh openssh-keygen openssh-sftp-server \
+    openssl \
     psplash \
     term-prompt \
     tzdata \
@@ -52,6 +53,8 @@ DEV_SDK_INSTALL = " \
     perl-modules \
     pkgconfig \
     python-modules \
+    autoconf \
+    automake \
  "
 
 DEV_EXTRAS = " \
@@ -62,7 +65,10 @@ DEV_EXTRAS = " \
     zeromq \
     zeromq-dev \
     iptables \
+    libssh \
     libnetconf \
+    zlib \
+    lzo \
  "
 
 EXTRA_TOOLS_INSTALL = " \

@@ -1,18 +1,27 @@
-From 5c3602514a66bbe579e3557a97a8d5c337a6bca5 Mon Sep 17 00:00:00 2001
+From c8bd9a00ed5e5a6f2d68a8370c74bd2216614d4a Mon Sep 17 00:00:00 2001
 From: Steve Beaver <sbeaver@netgate.com>
-Date: Tue, 29 Mar 2016 11:37:44 -0400
-Subject: [PATCH] Fix models
+Date: Thu, 7 Apr 2016 10:49:54 -0400
+Subject: [PATCH] lnctool
 
 Signed-off-by: Steve Beaver <sbeaver@netgate.com>
 ---
- Makefile.in | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ Makefile.in | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/Makefile.in b/Makefile.in
-index b300f3c..c9b14af 100644
+index 84c4405..a12bf90 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -72,7 +72,7 @@ NC_WORKINGDIR_PATH = $(DESTDIR)/@NC_WORKINGDIR_PATH@
+@@ -35,7 +35,7 @@
+ #
+ 
+ NAME = @PACKAGE_NAME@
+-LNCTOOL = dev-tools/lnctool/lnctool
++LNCTOOL = ../git/dev-tools/lnctool/lnctool
+ 
+ # Various configurable paths (remember to edit Makefile.in, not Makefile)
+ srcdir = @srcdir@
+@@ -74,7 +74,7 @@ NCNTF_STREAMS_PATH = $(DESTDIR)/@NCNTF_STREAMS_PATH@
  SETBIT = @SETBIT@
  SETUSER = @SETUSER@
  SETGROUP = @SETGROUP@
@@ -21,7 +30,7 @@ index b300f3c..c9b14af 100644
  IDNOGIT = "released as version $(VERSION)"
  LIBS = @LDFLAGS@ @LIBS@
  CFLAGS = -Wall @CFLAGS@
-@@ -95,7 +95,7 @@ PYSRCS = python/netconf.c \
+@@ -97,7 +97,7 @@ PYSRCS = python/netconf.c \
  	python/session.c
  endif
  
@@ -30,7 +39,7 @@ index b300f3c..c9b14af 100644
  
  ifeq "$(shell pwd)" "$(shell $(readlink) -f $(srcdir))"
  OBJDIR = .obj
-@@ -199,7 +199,7 @@ LNCDS_FILES = dev-tools/lncdatastore/main.c \
+@@ -201,7 +201,7 @@ LNCDS_FILES = dev-tools/lncdatastore/main.c \
  
  XML_SRCS = models/ietf-netconf-acm-config.rng.in
  
@@ -39,7 +48,7 @@ index b300f3c..c9b14af 100644
  
  models/%.rng: models/%.rng.in
  	@sed -e "s/\@DATAROOTDIR\@/$(subst /,\/,$(datarootdir))/g" $< > $@
-@@ -295,16 +295,16 @@ rpm: tarball $(TARBALLPYAPI)
+@@ -297,16 +297,16 @@ rpm: tarball $(TARBALLPYAPI)
  	fi
  
  .PHONY: install
@@ -60,7 +69,7 @@ index b300f3c..c9b14af 100644
  	@if test "$$(($(SETBIT) & 1))" = "1"; then \
  		if test -n "$(SETUSER)"; then \
  			chown $(SETUSER) $(NC_WORKINGDIR_PATH) || \
-@@ -348,10 +348,10 @@ install-devel: $(LNCTOOL) $(NAME).la $(HDRS_PUBL_ROOT) $(HDRS_PUBL_SUBDIR) $(NAM
+@@ -350,10 +350,10 @@ install-devel: $(LNCTOOL) $(NAME).la $(HDRS_PUBL_ROOT) $(HDRS_PUBL_SUBDIR) $(NAM
  	$(INSTALL_DATA) $(NAME).pc $(DESTDIR)/$(libdir)/pkgconfig/$(NAME).pc;
  	[ -d $(DESTDIR)/$(bindir) ] || \
  	   	(mkdir -p $(DESTDIR)/$(bindir); chmod 755 $(DESTDIR)/$(bindir)); \

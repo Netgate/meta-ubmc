@@ -1,0 +1,11 @@
+This is a partial recipe in that it performs the fetch/patch/configure/make/make install but does so from a tarball, not the git repository.
+The project README.git file requires that autoreconf if run first to generate the configure.in and autonf files but Yocto doesn't seem to like this.
+
+Perform these steps:
+
+1)	git clone git://tinc-vpn.org/tinc
+2)	autoreconf -fsi
+3)	tar czvf tinc.tar.gz tinc
+4)	cp tinc.tar.gz {recipe "files" directory}
+5)	bitbake tinc
+

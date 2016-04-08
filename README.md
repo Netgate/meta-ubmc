@@ -126,3 +126,7 @@ Details on preparing the uBMC to recive the Yocto built image are available on r
     
     
     micro-BMC login:
+
+Java notes:
+Support has been added for the openJDK layer which can be cloned from here: git://git.yoctoproject.org/meta-java. meta-java should be placed in the same directory as meta-ubmc the bitbake ubmc-image will create an image with the OpenJDK Java susyrm ainstalled and ready to run.
+ 

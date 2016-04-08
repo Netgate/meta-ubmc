@@ -69,7 +69,12 @@ DEV_EXTRAS = " \
     libnetconf \
     zlib \
     lzo \
- "
+    openjdk-7-common \
+    openjdk-7-java  \
+    openjdk-7-jre \
+    openjdk-7-vm-cacao \
+    icu \
+    "
 
 EXTRA_TOOLS_INSTALL = " \
     bc \

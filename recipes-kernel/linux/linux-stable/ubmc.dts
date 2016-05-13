@@ -87,3 +87,27 @@
 		i2c-address = <0x50>;
 	};
 };
+
+&epwmss1 {
+	status = "okay";
+};
+
+&ecap1 {
+	status = "okay";
+};
+
+&ehrpwm1 {
+	status = "okay";
+};
+
+&epwmss2 {
+	status = "okay";
+};
+
+&ecap2 {
+	status = "okay";
+};
+
+&ehrpwm2 {
+	status = "okay";
+};

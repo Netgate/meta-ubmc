@@ -24,6 +24,82 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&clkout2_pin>;
 
+	/* eHRPWM0 module */
+	pinctrl_ehrpwm0: pinctrl_ehrpwm0 {
+	    pinctrl-single,pins = <
+	        0x150 0x23  /* P9_22 = GPIO0_2 = eHRPWM0A, MODE3 */
+	        0x190 0x21  /* P9_31 = GPIO3_14 = eHRPWM0A, MODE1 */
+	        0x154 0x23  /* P9_21 = GPIO0_3 = eHRPWM0B, MODE3 */
+	        /*0x0a4 0x23     This is not OK P8_46 = GPIO2_7 = eHRPWM0B, MODE3 */
+	    >;
+	};
+
+	/* eCAP0 module ?????*/
+	pinctrl_ecap0: pinctrl_ecap0 {
+	    pinctrl-single,pins = <
+	        0x164 0x20  /* P9_42A (?) = GPIO0_7 = eCAP0, MODE0 */
+	    >;
+	};
+
+	/* eQEP0 module */
+	pinctrl_eqep0: pinctrl_eqep0 {
+	    pinctrl-single,pins = <
+	        0x1a8 0x21  /* P9_41B = GPIO3_20 = eQEP0_index, MODE1 */
+	        0x1ac 0x21  /* P9_25 = GPIO3_21 = eQEP0_strobe, MODE1 */
+	        0x1a4 0x31  /* P9_27 = GPIO3_19 = eQEP0B_in, MODE1 */
+	        0x1a0 0x31  /* P9_42B = GPIO3_18 = eQEP0A_in, MODE1 */
+	    >;
+	};
+
+
+	/* eHRPWM1 module */
+	pinctrl_ehrpwm1: pinctrl_ehrpwm1 {
+	    pinctrl-single,pins = <
+	        0x048 0x26  /* P9_14 = GPIO1_18 = eHRPWM1A, MODE6 */
+	        0x0c8 0x22  /* P8_36 = GPIO2_16 = eHRPWM1A, MODE2 */
+	        0x04c 0x26  /* P9_16 = GPIO1_19 = eHRPWM1B, MODE6 */
+	        0x0cc 0x22  /* P8_34 = GPIO2_17 = eHRPWM1B, MODE2 */
+	    >;
+	};
+
+	/* eQEP1 module */
+	pinctrl_eqep1: pinctrl_eqep1 {
+	    pinctrl-single,pins = <
+	        /*0x0d8 0x22     P8_31 = GPIO0_10 = eQEP1_index, MODE2, USED FOR PHOTOCELLS */
+	        /*0x0dc 0x22     P8_32 = GPIO0_11 = eQEP1_strobe, MODE2 USED FOR PHOTOCELLS */
+	        0x0d4 0x32  /* P8_33 = GPIO0_09 = eQEP1B_in, MODE2 */
+	        0x0d0 0x32  /* P8_35 = GPIO0_08 = eQEP1A_in, MODE2 */
+	    >;
+	};
+
+
+	/* eHRPWM2 module */
+	pinctrl_ehrpwm2: pinctrl_ehrpwm2 {
+	    pinctrl-single,pins = <
+	        0x020 0x24  /* P8_19 = GPIO0_22 = eHRPWM2A, MODE4*/
+	        0x0a0 0x23  /* P8_45 = GPIO2_6 = eHRPWM2A, MODE3 */
+	        0x024 0x24  /* P8_13 = GPIO0_23 = eHRPWM2B, MODE4 */
+	        0x0a4 0x23  /* P8_46 = GPIO2_7 = eHRPWM2B, MODE3 */
+	    >;
+	};
+
+	/* eCAP2 module */
+	pinctrl_ecap2: pinctrl_ecap2 {
+	    pinctrl-single,pins = <
+	        0x19c 0x24  /* P9_28 = GPIO3_17 = eCAP2, MODE4 */
+	    >;
+	};
+
+	/* eQEP2 module */
+	pinctrl_eqep2: pinctrl_eqep2 {
+	    pinctrl-single,pins = <
+	        0x038 0x0F  /* P8_16 = GPIO1_14 = eQEP2_index, MODE4 --- STOLEN FOR MOTOR DIRECTION, ORIGINAL HEX value was 0x24*/
+	        0x03c 0x0F  /* P8_15 = GPIO1_15 = eQEP2_strobe, MODE4 --- STOLEN FOR MOTOR DIRECTION, ORIGINAL HEX value was 0x24*/
+	        0x034 0x34  /* P8_11 = GPIO1_13 = eQEP2B_in, MODE4 */
+	        0x030 0x34  /* P8_12 = GPIO1_12 = eQEP2A_in, MODE4 */
+	    >;
+	};
+	
 	i2c0_pins: pinmux_i2c0_pins {
 		pinctrl-single,pins = <
 			AM33XX_IOPAD(0x988, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c0_sda.i2c0_sda */

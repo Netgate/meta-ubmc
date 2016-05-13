@@ -24,7 +24,7 @@ do_configure() {
 }
 
 do_fixsource() {
-	cp "${THISDIR}"/files/config.h "${B}"
+	cp "${THISDIR}"/files/config.h "${S}"
 	sed -i 's/SUBDIRS = m4 src doc/SUBDIRS = m4 src/' "${B}"/Makefile
 }
 

@@ -458,22 +458,6 @@
 			ti,timer-pwm;
 		};
 
-		usbotg_fck {
-			#clock-cells = <0x0>;
-			compatible = "ti,gate-clock";
-			clocks = <0xb>;
-			ti,bit-shift = <0x8>;
-			reg = <0x47c>;
-		};
-
-		usb_tsc_fck {
-			#clock-cells = <0x0>;
-			compatible = "fixed-factor-clock";
-			clocks = <0x5>;
-			clock-mult = <0x1>;
-			clock-div = <0x1>;
-		};
-
 		rtc: rtc@44e3e000 {
 			compatible = "ti,am3352-rtc", "ti,da830-rtc";
 			reg = <0x44e3e000 0x1000>;
@@ -521,34 +505,34 @@
 			#address-cells = <1>;
 			#size-cells = <1>;
 			ti,hwmods = "usb_otg_hs";
-			status = "okay";
+			status = "disabled";
 
 			usb_ctrl_mod: control@44e10620 {
 				compatible = "ti,am335x-usb-ctrl-module";
 				reg = <0x44e10620 0x10
 					0x44e10648 0x4>;
 				reg-names = "phy_ctrl", "wakeup";
-				status = "okay";
+				status = "disabled";
 			};
 
 			usb0_phy: usb-phy@47401300 {
 				compatible = "ti,am335x-usb-phy";
 				reg = <0x47401300 0x100>;
 				reg-names = "phy";
-				status = "okay";
+				status = "disabled";
 				ti,ctrl_mod = <&usb_ctrl_mod>;
 			};
 
 			usb0: usb@47401000 {
 				compatible = "ti,musb-am33xx";
-				status = "okay";
+				status = "disabled";
 				reg = <0x47401400 0x400
 					0x47401000 0x200>;
 				reg-names = "mc", "control";
 
 				interrupts = <18>;
 				interrupt-names = "mc";
-				dr_mode = "host";
+				dr_mode = "otg";
 				mentor,multipoint = <1>;
 				mentor,num-eps = <16>;
 				mentor,ram-bits = <12>;
@@ -583,21 +567,21 @@
 				compatible = "ti,am335x-usb-phy";
 				reg = <0x47401b00 0x100>;
 				reg-names = "phy";
-				status = "okay";
+				status = "disabled";
 				ti,ctrl_mod = <&usb_ctrl_mod>;
 			};
 
 			usb1: usb@47401800 {
 				compatible = "ti,musb-am33xx";
-				status = "okay";
+				status = "disabled";
 				reg = <0x47401c00 0x400
 					0x47401800 0x200>;
 				reg-names = "mc", "control";
 				interrupts = <19>;
 				interrupt-names = "mc";
-				dr_mode = "host";
+				dr_mode = "otg";
 				mentor,multipoint = <1>;
-				mentor,num-eps = <10>;
+				mentor,num-eps = <16>;
 				mentor,ram-bits = <12>;
 				mentor,power = <500>;
 				phys = <&usb1_phy>;
@@ -815,24 +799,17 @@
 		tscadc: tscadc@44e0d000 {
 			compatible = "ti,am3359-tscadc";
 			reg = <0x44e0d000 0x1000>;
-			interrupt-parent = <0x1>;
-			interrupts = <0x10>;
+			interrupt-parent = <&intc>;
+			interrupts = <16>;
 			ti,hwmods = "adc_tsc";
-			status = "okay";
+			status = "disabled";
 
 			tsc {
 				compatible = "ti,am3359-tsc";
-				ti,wires = <0x4>;
-				ti,x-plate-resistance = <0xc8>;
-				ti,coordinate-readouts = <0x5>;
-				ti,wire-config = <0x0 0x11 0x22 0x33>;
-				ti,charge-delay = <0x400>;
 			};
-
-			adc {
-				#io-channel-cells = <0x1>;
+			am335x_adc: adc {
+				#io-channel-cells = <1>;
 				compatible = "ti,am3359-adc";
-				ti,adc-channels = <0x4 0x5 0x6 0x7>;
 			};
 		};
 

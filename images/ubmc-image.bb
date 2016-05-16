@@ -94,6 +94,7 @@ EXTRA_TOOLS_INSTALL = " \
     vim-tiny \
     wget \
     zip \
+    scripts \
  "
 
 IMAGE_INSTALL += " \

@@ -95,6 +95,8 @@ EXTRA_TOOLS_INSTALL = " \
     wget \
     zip \
     scripts \
+    nrdm \
+    lm76 \
  "
 
 IMAGE_INSTALL += " \

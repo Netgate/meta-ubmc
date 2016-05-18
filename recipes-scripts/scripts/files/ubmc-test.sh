@@ -34,7 +34,7 @@ done
 
 function showtemp() {
 echo ---- Temperture sensor ----
-echo -n "Temperature:   : "; echo $(cpu_temp);
+echo -n "Temperature:   : "; echo $(lm76);
 echo
 }
 

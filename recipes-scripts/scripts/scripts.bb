@@ -15,6 +15,8 @@ ALLOW_EMPTY_${PN} = "1"
 S = "${WORKDIR}"
 
 do_install () {
-    install -d ${D}/usr/bin/ubmc-test.sh
+	install -d ${D}/usr
+	install -d ${D}/usr/bin
+	install -m 755 ${S}/ubmc-test.sh ${D}/usr/bin/ubmc-test.sh
 }
 
